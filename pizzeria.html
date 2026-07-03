@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzería en Casa</title>
-    <!-- Importación de Google Fonts: Elegante (Cinzel/Montserrat) y Estilo Gis (Fredericka) -->
+    <title>Pizzería en Casa - App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Fredericka+the+Great&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS GENERALES Y FONDO TOTALMENTE NEGRO --- */
+        /* --- ESTILOS GENERALES --- */
         body {
             background-color: #000000;
             color: #ffffff;
@@ -20,6 +19,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            padding-bottom: 80px; /* Espacio para la barra de navegación inferior */
         }
 
         .phone-container {
@@ -30,7 +30,16 @@
             box-sizing: border-box;
         }
 
-        /* --- CABECERA ELEGANTE CON IMAGEN DE HORNO --- */
+        /* --- PESTAÑAS (NAVEGACIÓN) --- */
+        .app-page {
+            display: none;
+        }
+        .app-page.active {
+            display: block;
+            animation: fadeIn 0.3s ease both;
+        }
+
+        /* --- CABECERA --- */
         .hero {
             text-align: center;
             margin-bottom: 25px;
@@ -39,326 +48,318 @@
             overflow: hidden;
             background-color: #0b0b0b;
         }
+        .hero-image { width: 100%; height: 140px; object-fit: cover; block; }
+        .hero-text { padding: 15px; }
+        .hero h1 { font-family: 'Cinzel', serif; font-size: 24px; margin: 0; letter-spacing: 2px; }
+        .hero p { font-size: 12px; color: #aaa; margin: 5px 0 0 0; }
 
-        .hero-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .hero-text {
-            padding: 20px 15px;
-        }
-
-        .hero h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 26px;
-            color: #ffffff;
-            margin: 0 0 8px 0;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 13px;
-            color: #aaaaaa;
-            margin: 0;
-            line-height: 1.6;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        /* --- APARTADOS ACORDEÓN / TRANSICIÓN FLUIDA --- */
+        /* --- ACORDEÓN DEL MENÚ --- */
         .menu-category {
             margin-bottom: 15px;
             border: 1px solid #222222;
             border-radius: 12px;
             overflow: hidden;
             background-color: #0b0b0b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
-
         .menu-category.active {
             background-color: #111111;
             border-color: #ffffff;
-            box-shadow: 0 8px 24px rgba(255,255,255,0.05);
-            transform: scale(1.01);
         }
-
         .category-trigger {
-            width: 100%;
-            padding: 20px;
-            background: none;
-            border: none;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            outline: none;
+            width: 100%; padding: 18px; background: none; border: none;
+            text-align: left; display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; outline: none;
         }
+        .category-title { font-family: 'Cinzel', serif; font-size: 14px; color: #ffffff; font-weight: 700; }
+        .category-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; padding: 0 20px; }
+        .menu-category.active .category-content { max-height: 250px; padding-bottom: 20px; }
 
-        .category-title {
-            font-family: 'Cinzel', serif;
-            font-size: 15px;
-            color: #ffffff;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .arrow-icon {
-            font-size: 12px;
-            color: #666666;
-            transition: transform 0.3s ease;
-        }
-
-        .menu-category.active .arrow-icon {
-            transform: rotate(180deg);
-            color: #ffffff;
-        }
-
-        /* --- CONTROL DE ANIMACIÓN DE APERTURA --- */
-        .category-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            padding: 0 20px;
-        }
-
-        .menu-category.active .category-content {
-            max-height: 250px; 
-            padding-bottom: 25px;
-        }
-
-        /* --- CUADRO DE PRODUCTO INTERIOR --- */
-        .product-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 15px;
-            animation: fadeIn 0.4s ease both;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .product-info {
-            flex: 1;
-            padding-right: 15px;
-        }
-
-        .flavor-name {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .flavor-style {
-            font-size: 12px;
-            color: #888888;
-            margin: 4px 0 0 0;
-            font-weight: 300;
-        }
-
-        /* --- PRECIO EN ROJO ESTILO GIS --- */
+        .product-card { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
+        .product-info { flex: 1; padding-right: 15px; }
+        .flavor-name { font-size: 16px; font-weight: 600; }
+        .flavor-style { font-size: 11px; color: #666; margin-top: 2px; }
+        
+        /* PRECIO ESTILO GIS ROJO */
         .chalk-price {
             font-family: 'Fredericka the Great', chalkboard, cursive;
-            font-size: 28px;
-            color: #e53935; 
-            margin: 8px 0 0 0;
-            font-weight: normal;
-            letter-spacing: 1px;
+            font-size: 26px;
+            color: #e53935;
+            margin: 5px 0;
         }
 
-        /* --- CONTENEDOR PARA IMAGEN DE PIZZA --- */
-        .product-image-container {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #222222;
+        .product-image-container { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 2px solid #222; }
+        .pizza-img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- BOTONES DE AGREGAR AL CARRITO --- */
+        .btn-add {
+            background-color: #e53935; color: white; border: none; padding: 6px 12px;
+            border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 12px; margin-top: 5px;
         }
 
-        .pizza-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        /* --- SECCIÓN BEBIDAS --- */
+        .drinks-section { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #222; }
+        .drink-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 
-        /* --- BEBIDAS --- */
-        .drinks-section {
-            margin-top: 35px;
-            padding: 15px 5px;
-            border-top: 1px dashed #222222;
+        /* --- BARRA DE NAVEGACIÓN INFERIOR (ESTILO APP) --- */
+        .nav-bar {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 480px; background-color: #0b0b0b;
+            border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 12px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.8); z-index: 100;
         }
-
-        .drinks-title {
-            font-family: 'Cinzel', serif;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #ffffff;
+        .nav-item {
+            background: none; border: none; color: #666; font-size: 11px;
+            font-weight: 600; text-transform: uppercase; cursor: pointer; letter-spacing: 1px;
         }
+        .nav-item.active { color: #e53935; }
 
-        .drink-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #cccccc;
+        /* --- CARRITO FLOTANTE / TOTAL --- */
+        .cart-summary {
+            background-color: #111; border: 1px solid #e53935; border-radius: 8px;
+            padding: 15px; margin-top: 25px; text-align: center;
         }
-
-        .drink-price {
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        /* --- BOTÓN DE WHATSAPP --- */
         .btn-whatsapp {
-            display: block;
-            text-align: center;
-            background-color: #ffffff;
-            color: #000000;
-            padding: 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 30px;
-            box-shadow: 0 6px 20px rgba(255,255,255,0.05);
-            transition: background-color 0.3s, color 0.3s;
+            display: block; text-align: center; background-color: #ffffff; color: #000000;
+            padding: 14px; border-radius: 6px; text-decoration: none; font-size: 13px;
+            font-weight: 600; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px;
         }
 
-        .btn-whatsapp:hover {
-            background-color: #e53935;
-            color: #ffffff;
+        /* --- SECCIÓN MINIMAPA --- */
+        .map-container {
+            width: 100%; height: 280px; background-color: #111; border-radius: 12px;
+            border: 1px solid #222; display: flex; align-items: center; justify-content: center; color: #666;
+            margin-top: 15px; text-align: center; padding: 20px; box-sizing: border-box;
         }
+
+        /* --- SECCIÓN ADMIN --- */
+        .admin-box { background-color: #0b0b0b; border: 1px solid #333; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .admin-status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: #2e7d32; color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="phone-container">
         
-        <!-- Cabecera de la Marca con foto de Horno -->
-        <div class="hero">
-            <img src="https://images.unsplash.com/photo-1573145959534-9e48603ed749?w=500&auto=format&fit=crop&q=60" alt="Horno de Pizza Artesanal" class="hero-image">
-            <div class="hero-text">
-                <h1>Pizzería en Casa</h1>
-                <p>Auténtico sabor artesanal italiano</p>
+        <!-- ================= PÁGINA 1: EL MENÚ & CARRITO ================= -->
+        <div id="page-menu" class="app-page active">
+            <div class="hero">
+                <img src="https://images.unsplash.com/photo-1573145959534-9e48603ed749?w=500&auto=format&fit=crop&q=60" alt="Horno" class="hero-image">
+                <div class="hero-text">
+                    <h1>Pizzería en Casa</h1>
+                    <p>Ordena directamente desde la app</p>
+                </div>
+            </div>
+
+            <!-- Categoría 1 -->
+            <div class="menu-category" id="cat-horno">
+                <button class="category-trigger" onclick="toggleCategory('cat-horno')">
+                    <span class="category-title">Pizza Horno Pizzero</span>
+                    <span>▼</span>
+                </button>
+                <div class="category-content">
+                    <div class="product-card">
+                        <div class="product-info">
+                            <div class="flavor-name">Peperoni</div>
+                            <div class="flavor-style">Estilo Napolitana Tradicional</div>
+                            <div class="chalk-price">$85</div>
+                            <button class="btn-add" onclick="addToCart('Pizza Horno Pizzero', 85)">+ Agregar</button>
+                        </div>
+                        <div class="product-image-container">
+                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200" class="pizza-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categoría 2 -->
+            <div class="menu-category" id="cat-normal">
+                <button class="category-trigger" onclick="toggleCategory('cat-normal')">
+                    <span class="category-title">Pizza Normal</span>
+                    <span>▼</span>
+                </button>
+                <div class="category-content">
+                    <div class="product-card">
+                        <div class="product-info">
+                            <div class="flavor-name">Peperoni</div>
+                            <div class="flavor-style">Tamaño Mediano Comercial</div>
+                            <div class="chalk-price">$85</div>
+                            <button class="btn-add" onclick="addToCart('Pizza Normal', 85)">+ Agregar</button>
+                        </div>
+                        <div class="product-image-container">
+                            <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200" class="pizza-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categoría 3 -->
+            <div class="menu-category" id="cat-grande">
+                <button class="category-trigger" onclick="toggleCategory('cat-grande')">
+                    <span class="category-title">Pizza Grande</span>
+                    <span>▼</span>
+                </button>
+                <div class="category-content">
+                    <div class="product-card">
+                        <div class="product-info">
+                            <div class="flavor-name">Peperoni</div>
+                            <div class="flavor-style">Tamaño Grande Familiar</div>
+                            <div class="chalk-price">$100</div>
+                            <button class="btn-add" onclick="addToCart('Pizza Grande', 100)">+ Agregar</button>
+                        </div>
+                        <div class="product-image-container">
+                            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=200" class="pizza-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bebidas -->
+            <div class="drinks-section">
+                <div class="drink-item">
+                    <div>
+                        <div style="font-weight:600;">Coca-Cola 600 ml</div>
+                        <div style="color:#e53935; font-weight:bold; margin-top:2px;">$25</div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('Coca-Cola 600ml', 25)">+ Agregar</button>
+                </div>
+                <div class="drink-item">
+                    <div>
+                        <div style="font-weight:600;">Coca-Cola 2 Litros</div>
+                        <div style="color:#e53935; font-weight:bold; margin-top:2px;">$48</div>
+                    </div>
+                    <button class="btn-add" onclick="addToCart('Coca-Cola 2L', 48)">+ Agregar</button>
+                </div>
+            </div>
+
+            <!-- Resumen del Carrito Automatizado -->
+            <div class="cart-summary">
+                <div style="font-size: 13px; color: #aaa;">Tu Pedido Actual:</div>
+                <div id="cart-items" style="font-size: 14px; margin: 8px 0; font-weight: 600;">Tu carrito está vacío</div>
+                <div style="font-size: 18px; font-weight: bold;">Total: <span id="cart-total" style="color:#e53935;">$0</span></div>
+                <a href="#" id="whatsapp-link" class="btn-whatsapp" onclick="sendOrder(event)">🛒 Confirmar y Enviar Orden</a>
             </div>
         </div>
 
-        <!-- APARTADO 1: HORNO PIZZERO -->
-        <div class="menu-category" id="cat-horno">
-            <button class="category-trigger" onclick="toggleCategory('cat-horno')">
-                <span class="category-title">Pizza Horno Pizzero</span>
-                <span class="arrow-icon">▼</span>
-            </button>
-            <div class="category-content">
-                <div class="product-card">
-                    <div class="product-info">
-                        <div class="flavor-name">Peperoni</div>
-                        <div class="flavor-style">Estilo Napolitana Tradicional</div>
-                        <div class="chalk-price">$85</div>
-                    </div>
-                    <div class="product-image-container">
-                        <!-- Foto real de Pizza Estilo Napolitana -->
-                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&auto=format&fit=crop&q=80" alt="Pizza Estilo Napolitana Peperoni" class="pizza-img">
-                    </div>
+        <!-- ================= PÁGINA 2: MINIMAPA DE COBERTURA ================= -->
+        <div id="page-mapa" class="app-page">
+            <h2 style="font-family:'Cinzel'; letter-spacing:1px; font-size:20px; border-left:3px solid #e53935; padding-left:10px;">Zona de Entrega</h2>
+            <p style="font-size:13px; color:#aaa; line-height:1.5;">Repartimos únicamente en nuestra zona cercana para garantizar que tu pizza napolitana llegue caliente y crujiente.</p>
+            
+            <div class="map-container">
+                <!-- Aquí puedes meter un mapa real de Google Maps usando un iframe o dejar esta maqueta limpia -->
+                <div>
+                    <div style="font-size:40px; margin-bottom:10px;">📍</div>
+                    <strong>📍 Cobertura Local Activa</strong><br>
+                    <span style="font-size:12px; color:#555;">[Tu mapa de calles o colonias se mostrará aquí]</span>
                 </div>
             </div>
         </div>
 
-        <!-- APARTADO 2: PIZZA NORMAL -->
-        <div class="menu-category" id="cat-normal">
-            <button class="category-trigger" onclick="toggleCategory('cat-normal')">
-                <span class="category-title">Pizza Normal</span>
-                <span class="arrow-icon">▼</span>
-            </button>
-            <div class="category-content">
-                <div class="product-card">
-                    <div class="product-info">
-                        <div class="flavor-name">Peperoni</div>
-                        <div class="flavor-style">Pizza Comercial Clásica</div>
-                        <div class="chalk-price">$85</div>
-                    </div>
-                    <div class="product-image-container">
-                        <!-- Foto real de Pizza Comercial con mucho Pepperoni -->
-                        <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&auto=format&fit=crop&q=80" alt="Pizza Comercial Peperoni" class="pizza-img">
-                    </div>
+        <!-- ================= PÁGINA 3: PANEL DEL ADMIN ================= -->
+        <div id="page-admin" class="app-page">
+            <h2 style="font-family:'Cinzel'; letter-spacing:1px; font-size:20px; border-left:3px solid #e53935; padding-left:10px;">Panel de Control</h2>
+            
+            <div class="admin-box">
+                <div style="display:flex; justify-content:between; align-items:center; width:100%;">
+                    <span style="font-weight:600; flex:1;">Estado del Negocio:</span>
+                    <span class="admin-status">🟢 ABIERTO</span>
                 </div>
             </div>
-        </div>
 
-        <!-- APARTADO 3: PIZZA GRANDE -->
-        <div class="menu-category" id="cat-grande">
-            <button class="button category-trigger" onclick="toggleCategory('cat-grande')">
-                <span class="category-title">Pizza Grande</span>
-                <span class="arrow-icon">▼</span>
-            </button>
-            <div class="category-content">
-                <div class="product-card">
-                    <div class="product-info">
-                        <div class="flavor-name">Peperoni</div>
-                        <div class="flavor-style">Pizza Comercial Familiar</div>
-                        <div class="chalk-price">$100</div>
-                    </div>
-                    <div class="product-image-container">
-                        <!-- Foto real de Pizza Comercial Grande con Pepperoni -->
-                        <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=300&auto=format&fit=crop&q=80" alt="Pizza Grande Peperoni" class="pizza-img">
-                    </div>
-                </div>
+            <div class="admin-box">
+                <strong style="color:#e53935;">Monitoreo de Sistema</strong>
+                <p style="font-size:12px; color:#aaa; margin:5px 0 0 0;">Pedidos recibidos hoy: <strong style="color:#fff;">0</strong></p>
+                <p style="font-size:12px; color:#aaa; margin:3px 0 0 0;">Ganancia estimada: <strong style="color:#2e7d32;">$0.00 MXN</strong></p>
             </div>
         </div>
 
-        <!-- Sección de Bebidas -->
-        <div class="drinks-section">
-            <div class="drinks-title">Bebidas</div>
-            <div class="drink-item">
-                <span>Coca-Cola Original 600 ml</span>
-                <span class="drink-price">$25</span>
-            </div>
-            <div class="drink-item">
-                <span>Coca-Cola Original 2 Litros</span>
-                <span class="drink-price">$48</span>
-            </div>
+        <!-- BARRA DE NAVEGACIÓN INFERIOR DE LA APP -->
+        <div class="nav-bar">
+            <button class="nav-item active" id="btn-nav-menu" onclick="switchPage('menu')">🍕 Menú</button>
+            <button class="nav-item" id="btn-nav-mapa" onclick="switchPage('mapa')">📍 Mapa</button>
+            <button class="nav-item" id="btn-nav-admin" onclick="switchPage('admin')">⚙️ Admin</button>
         </div>
-
-        <!-- Botón de Envío Directo -->
-        <!-- REEMPLAZA TU_NUMERO_AQUI por tu número de WhatsApp real (ej: 521234567890) -->
-        <a href="https://wa.me/TU_NUMERO_AQUI?text=¡Hola!%20Me%20gustaría%20hacer%20un%20pedido." class="btn-whatsapp" target="_blank">
-            Pedir por WhatsApp
-        </a>
 
     </div>
 
-    <!-- CÓDIGO JAVASCRIPT: Controla la apertura fluida y minimiza las demás secciones -->
+    <!-- SCRIPT LOGICO PARA MANEJAR LA APP -->
     <script>
+        // Lógica de navegación entre pestañas
+        function switchPage(pageId) {
+            document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('btn-nav-' + pageId).classList.add('active');
+        }
+
+        // Lógica de apertura del acordeón
         function toggleCategory(id) {
             const allCategories = document.querySelectorAll('.menu-category');
-            
             allCategories.forEach(cat => {
-                if(cat.id === id) {
-                    cat.classList.toggle('active');
-                } else {
-                    cat.removeProperty ? cat.classList.remove('active') : cat.classList.remove('active');
-                }
+                if(cat.id === id) { cat.classList.toggle('active'); }
+                else { cat.classList.remove('active'); }
             });
+        }
+
+        // LORICA DEL CARRITO EN LA APP
+        let cart = {};
+        function addToCart(productName, price) {
+            if (cart[productName]) {
+                cart[productName].qty += 1;
+            } else {
+                cart[productName] = { price: price, qty: 1 };
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items');
+            const totalContainer = document.getElementById('cart-total');
+            
+            let keys = Object.keys(cart);
+            if(keys.length === 0) {
+                itemsContainer.innerHTML = "Tu carrito está vacío";
+                totalContainer.innerHTML = "$0";
+                return;
+            }
+            
+            let textSummary = [];
+            let total = 0;
+            
+            keys.forEach(key => {
+                let item = cart[key];
+                textSummary.push(`${item.qty}x ${key}`);
+                total += (item.price * item.qty);
+            });
+            
+            itemsContainer.innerHTML = textSummary.join(', ');
+            totalContainer.innerHTML = "$" + total;
+        }
+
+        function sendOrder(e) {
+            let keys = Object.keys(cart);
+            if(keys.length === 0) {
+                e.preventDefault();
+                alert("Por favor, agrega al menos una pizza o refresco a tu carrito antes de pedir.");
+                return;
+            }
+            
+            let message = "¡Hola! Me gustaría hacer el siguiente pedido desde la app:\n\n";
+            let total = 0;
+            keys.forEach(key => {
+                let item = cart[key];
+                message += `• ${item.qty}x ${key} ($${item.price * item.qty})\n`;
+                total += (item.price * item.qty);
+            });
+            message += `\n*Total a Pagar: $${total}*`;
+            
+            // Reemplaza el 521234567890 por tu número de teléfono real
+            let whatsappNumber = "521234567890"; 
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
     </script>
 </body>
