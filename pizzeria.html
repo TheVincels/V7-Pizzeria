@@ -30,12 +30,25 @@
             box-sizing: border-box;
         }
 
-        /* --- CABECERA ELEGANTE --- */
+        /* --- CABECERA ELEGANTE CON IMAGEN DE HORNO --- */
         .hero {
             text-align: center;
-            padding: 30px 10px 20px 10px;
             margin-bottom: 25px;
             border-bottom: 2px solid #1a1a1a;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #0b0b0b;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-text {
+            padding: 20px 15px;
         }
 
         .hero h1 {
@@ -68,7 +81,6 @@
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Al expandirse, la categoría crece sutilmente y resalta el borde */
         .menu-category.active {
             background-color: #111111;
             border-color: #ffffff;
@@ -117,7 +129,7 @@
         }
 
         .menu-category.active .category-content {
-            max-height: 200px; 
+            max-height: 250px; 
             padding-bottom: 25px;
         }
 
@@ -149,29 +161,39 @@
             letter-spacing: 0.5px;
         }
 
+        .flavor-style {
+            font-size: 12px;
+            color: #888888;
+            margin: 4px 0 0 0;
+            font-weight: 300;
+        }
+
         /* --- PRECIO EN ROJO ESTILO GIS --- */
         .chalk-price {
             font-family: 'Fredericka the Great', chalkboard, cursive;
             font-size: 28px;
-            color: #e53935; /* Rojo Vibrante */
-            margin: 6px 0 0 0;
+            color: #e53935; 
+            margin: 8px 0 0 0;
             font-weight: normal;
             letter-spacing: 1px;
         }
 
-        /* --- CONTENEDOR PARA IMAGEN PNG --- */
+        /* --- CONTENEDOR PARA IMAGEN DE PIZZA --- */
         .product-image-container {
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #222222;
         }
 
-        .pizza-png {
+        .pizza-img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
         }
 
         /* --- BEBIDAS --- */
@@ -232,10 +254,13 @@
 
     <div class="phone-container">
         
-        <!-- Cabecera de la Marca -->
+        <!-- Cabecera de la Marca con foto de Horno -->
         <div class="hero">
-            <h1>Pizzería en Casa</h1>
-            <p>Auténtico sabor artesanal italiano</p>
+            <img src="https://images.unsplash.com/photo-1573145959534-9e48603ed749?w=500&auto=format&fit=crop&q=60" alt="Horno de Pizza Artesanal" class="hero-image">
+            <div class="hero-text">
+                <h1>Pizzería en Casa</h1>
+                <p>Auténtico sabor artesanal italiano</p>
+            </div>
         </div>
 
         <!-- APARTADO 1: HORNO PIZZERO -->
@@ -248,13 +273,12 @@
                 <div class="product-card">
                     <div class="product-info">
                         <div class="flavor-name">Peperoni</div>
+                        <div class="flavor-style">Estilo Napolitana Tradicional</div>
                         <div class="chalk-price">$85</div>
                     </div>
                     <div class="product-image-container">
-                        <!-- Imagen PNG transparente. Asegúrate de guardarla en la misma carpeta -->
-                        <img src="pizza-horno.png" alt="Pizza Peperoni Horno" class="pizza-png" onerror="this.style.display='none';">
-                        <!-- Ilustración temporal si no encuentra la imagen -->
-                        <svg class="pizza-png" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="opacity:0.8;"><circle cx="50" cy="50" r="42" fill="#f4a261"/><circle cx="35" cy="35" r="6" fill="#e76f51"/><circle cx="65" cy="45" r="6" fill="#e76f51"/><circle cx="48" cy="65" r="6" fill="#e76f51"/></svg>
+                        <!-- Foto real de Pizza Estilo Napolitana -->
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&auto=format&fit=crop&q=80" alt="Pizza Estilo Napolitana Peperoni" class="pizza-img">
                     </div>
                 </div>
             </div>
@@ -270,11 +294,12 @@
                 <div class="product-card">
                     <div class="product-info">
                         <div class="flavor-name">Peperoni</div>
+                        <div class="flavor-style">Pizza Comercial Clásica</div>
                         <div class="chalk-price">$85</div>
                     </div>
                     <div class="product-image-container">
-                        <img src="pizza-normal.png" alt="Pizza Peperoni Normal" class="pizza-png" onerror="this.style.display='none';">
-                        <svg class="pizza-png" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="opacity:0.8;"><circle cx="50" cy="50" r="42" fill="#e29578"/><circle cx="40" cy="40" r="6" fill="#b5179e"/><circle cx="60" cy="60" r="6" fill="#b5179e"/></svg>
+                        <!-- Foto real de Pizza Comercial con mucho Pepperoni -->
+                        <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&auto=format&fit=crop&q=80" alt="Pizza Comercial Peperoni" class="pizza-img">
                     </div>
                 </div>
             </div>
@@ -282,7 +307,7 @@
 
         <!-- APARTADO 3: PIZZA GRANDE -->
         <div class="menu-category" id="cat-grande">
-            <button class="category-trigger" onclick="toggleCategory('cat-grande')">
+            <button class="button category-trigger" onclick="toggleCategory('cat-grande')">
                 <span class="category-title">Pizza Grande</span>
                 <span class="arrow-icon">▼</span>
             </button>
@@ -290,11 +315,12 @@
                 <div class="product-card">
                     <div class="product-info">
                         <div class="flavor-name">Peperoni</div>
+                        <div class="flavor-style">Pizza Comercial Familiar</div>
                         <div class="chalk-price">$100</div>
                     </div>
                     <div class="product-image-container">
-                        <img src="pizza-grande.png" alt="Pizza Peperoni Grande" class="pizza-png" onerror="this.style.display='none';">
-                        <svg class="pizza-png" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="opacity:0.8;"><circle cx="50" cy="50" r="44" fill="#f4d068"/><circle cx="35" cy="35" r="7" fill="#d32f2f"/><circle cx="65" cy="35" r="7" fill="#d32f2f"/><circle cx="50" cy="65" r="7" fill="#d32f2f"/></svg>
+                        <!-- Foto real de Pizza Comercial Grande con Pepperoni -->
+                        <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=300&auto=format&fit=crop&q=80" alt="Pizza Grande Peperoni" class="pizza-img">
                     </div>
                 </div>
             </div>
@@ -314,7 +340,7 @@
         </div>
 
         <!-- Botón de Envío Directo -->
-        <!-- REEMPLAZA TU_NUMERO_AQUI por tu número (ej: 521234567890) -->
+        <!-- REEMPLAZA TU_NUMERO_AQUI por tu número de WhatsApp real (ej: 521234567890) -->
         <a href="https://wa.me/TU_NUMERO_AQUI?text=¡Hola!%20Me%20gustaría%20hacer%20un%20pedido." class="btn-whatsapp" target="_blank">
             Pedir por WhatsApp
         </a>
@@ -324,14 +350,13 @@
     <!-- CÓDIGO JAVASCRIPT: Controla la apertura fluida y minimiza las demás secciones -->
     <script>
         function toggleCategory(id) {
-            const current = document.getElementById(id);
             const allCategories = document.querySelectorAll('.menu-category');
             
             allCategories.forEach(cat => {
                 if(cat.id === id) {
                     cat.classList.toggle('active');
                 } else {
-                    cat.classList.remove('active');
+                    cat.removeProperty ? cat.classList.remove('active') : cat.classList.remove('active');
                 }
             });
         }
