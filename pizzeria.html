@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pizzería en Casa — Pizza Artesanal</title>
-    <!-- Fuentes tipográficas de Google Fonts -->
+    <!-- Fuentes tipográficas: Marker para estilo gis rústico y Grotesk para textos limpios -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -30,6 +30,7 @@
             position: relative;
             box-sizing: border-box;
             overflow-x: hidden;
+            padding-bottom: 100px; /* Espacio para el carrito flotante */
         }
 
         /* --- VISTAS INTERCAMBIABLES --- */
@@ -44,24 +45,49 @@
             animation: fadeIn 0.3s ease both;
         }
 
-        /* --- FUENTES DE ESTILO GIS (MANUSCRITA) --- */
+        /* --- DETALLES DE DISEÑO ESTILO GIS (MANUSCRITO DE LA IMAGEN) --- */
         .chalk-title {
             font-family: 'Permanent Marker', cursive;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            letter-spacing: 2px;
+        }
+
+        .chalk-underline {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chalk-underline::after {
+            content: '';
+            position: absolute;
+            left: 5%;
+            bottom: -5px;
+            width: 90%;
+            height: 4px;
+            background-color: #c62828;
+            border-radius: 2px;
         }
 
         .chalk-price {
             font-family: 'Permanent Marker', cursive;
             color: #ffffff;
-            font-size: 32px;
+            font-size: 28px;
             margin: 5px 0;
-            border-bottom: 2px solid #e53935;
+            position: relative;
             display: inline-block;
         }
+        
+        .chalk-price::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 3px;
+            background-color: #c62828;
+        }
 
-        /* --- COMPONENTES PANTALLA 1: MENÚ --- */
+        /* --- BARRA SUPERIOR --- */
         .header-nav {
             display: flex;
             justify-content: space-between;
@@ -77,18 +103,17 @@
             font-weight: 700;
         }
 
+        /* --- HÉROE PRINCIPAL --- */
         .hero-section {
             text-align: center;
-            padding: 30px 0;
+            padding: 40px 0 25px 0;
         }
 
         .hero-main-title {
-            font-size: 52px;
-            line-height: 0.9;
+            font-size: 58px;
+            line-height: 0.85;
             margin: 0 0 15px 0;
-            background: linear-gradient(180deg, #ffffff 70%, #aaaaaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         .hero-subtitle {
@@ -97,27 +122,28 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 500;
+            margin-top: 10px;
         }
 
         .hero-subtitle span {
-            color: #e53935;
+            color: #c62828;
             margin: 0 6px;
         }
 
+        /* --- SECCIÓN DOMICILIO --- */
         .delivery-badge {
-            background-color: #121212;
-            border: 1px solid #222222;
+            background-color: #0f0f0f;
+            border: 1px solid #1a1a1a;
             border-radius: 16px;
             padding: 16px 20px;
             display: flex;
             align-items: center;
-            margin: 20px 0 35px 0;
+            margin: 15px 0 30px 0;
         }
 
         .delivery-icon {
-            font-size: 28px;
+            font-size: 26px;
             margin-right: 15px;
-            color: #e53935;
         }
 
         .delivery-text h4 {
@@ -137,90 +163,108 @@
             text-align: center;
             font-size: 18px;
             color: #ffffff;
-            margin: 30px 0 25px 0;
-        }
-        
-        .section-divider span {
-            color: #e53935;
-            margin: 0 5px;
+            margin: 35px 0 25px 0;
         }
 
-        /* --- TARJETAS DE PIZZAS GRANDES --- */
+        /* --- TARJETAS DE NUESTRAS PIZZAS --- */
         .pizza-card-large {
             position: relative;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: 200px;
         }
 
         .pizza-info-left {
-            width: 50%;
+            width: 55%;
             z-index: 2;
         }
 
         .pizza-tag {
             font-size: 10px;
-            color: #e53935;
+            color: #c62828;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
         }
 
         .pizza-name-large {
-            font-size: 26px;
-            margin: 4px 0 10px 0;
+            font-size: 28px;
+            margin: 4px 0 8px 0;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .pizza-desc-large {
             font-size: 12px;
-            color: #aaaaaa;
+            color: #888888;
             line-height: 1.5;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .pizza-img-right {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             object-fit: contain;
             position: absolute;
-            right: -25px;
+            right: -20px;
             z-index: 1;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
         }
 
-        /* --- BOTONES PRINCIPALES --- */
-        .btn-action-red {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-mini-add {
             background-color: #c62828;
-            color: #ffffff;
-            padding: 16px;
-            border-radius: 12px;
-            text-decoration: none;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 15px;
+            vertical-align: middle;
+        }
+
+        /* --- BOTÓN FLOTANTE DE CARRITO (NUEVO FLUJO) --- */
+        .floating-cart-btn {
+            position: fixed;
+            bottom: 25px;
+            right: calc(50% - 195px); /* Centrado relativo al mockup móvil */
+            background-color: #c62828;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 24px;
             font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: none;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(198, 40, 40, 0.5);
             cursor: pointer;
-            width: 100%;
-            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.3);
-            transition: background-color 0.2s;
+            z-index: 999;
+            transition: transform 0.2s;
+            display: none; /* Se activa dinámicamente */
         }
 
-        .btn-action-red:hover {
-            background-color: #b71c1c;
+        @media(max-width: 440px) {
+            .floating-cart-btn { right: 20px; transform: none; }
         }
 
-        .footer-info {
-            text-align: center;
-            font-size: 11px;
-            color: #666666;
-            margin-top: 15px;
+        .cart-count-badge {
+            background-color: white;
+            color: #c62828;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         /* --- COMPONENTES PANTALLA 2: PEDIDO --- */
@@ -228,9 +272,8 @@
             background: none;
             border: none;
             color: #ffffff;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            padding: 0 10px 0 0;
         }
 
         .empty-cart-box {
@@ -238,114 +281,66 @@
             border-radius: 16px;
             padding: 30px;
             text-align: center;
-            color: #666666;
-            margin-bottom: 30px;
-            background-color: #090909;
+            color: #444444;
+            margin-bottom: 25px;
+            background-color: #080808;
         }
 
-        .empty-cart-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-            opacity: 0.3;
-        }
-
-        /* LISTA DE ARTÍCULOS EN EL CARRITO */
         .cart-list {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .cart-item-row {
             display: flex;
             align-items: center;
-            background-color: #0f0f0f;
-            border: 1px solid #1a1a1a;
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
             justify-content: space-between;
+            background-color: #0f0f0f;
+            border: 1px solid #161616;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
         }
 
-        .cart-item-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
+        .cart-item-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-img-mini {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
+            object-fit: cover;
             margin-right: 15px;
-        }
-
-        .cart-item-details {
-            flex: 1;
+            border: 1px solid #222;
         }
 
         .cart-item-name {
             font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .cart-item-price {
             font-size: 13px;
-            color: #e53935;
+            color: #c62828;
             font-weight: 700;
             margin-top: 2px;
         }
 
         .btn-plus-circle {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background-color: #e53935;
+            background-color: #c62828;
             color: #ffffff;
             border: none;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* COMPONENTES DE LÍNEA SIMPLES (EXTRAS) */
-        .extra-row-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #0f0f0f;
-            border: 1px solid #161616;
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 10px;
-        }
-
-        .extra-left-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .extra-icon {
-            color: #e53935;
-            font-size: 20px;
-            margin-right: 15px;
-        }
-
-        .extra-name {
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .extra-price {
-            font-size: 12px;
-            color: #e53935;
-            margin-top: 1px;
-            font-weight: 700;
-        }
-
-        /* FORMULARIO DE ENTREGA */
-        .delivery-form {
-            margin-top: 25px;
-        }
-
+        /* FORMULARIO INSUMOS INTERFAZ DE ENTRADA */
         .input-group {
             position: relative;
             margin-bottom: 12px;
@@ -353,33 +348,44 @@
 
         .input-icon {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: #444444;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .form-input {
             width: 100%;
             background-color: #090909;
-            border: 1px solid #1a1a1a;
-            border-radius: 10px;
-            padding: 14px 14px 14px 45px;
+            border: 1px solid #161616;
+            border-radius: 12px;
+            padding: 15px 15px 15px 45px;
             color: #ffffff;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 13px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        .form-input:focus {
-            border-color: #444444;
+        .btn-action-red {
+            background-color: #c62828;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.2);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -388,22 +394,24 @@
 
     <div class="phone-mockup">
         
-        <!-- ================= PÁGINA 1: MENÚ DE PIZZAS ================= -->
+        <!-- BOTÓN FLOTANTE DEL CARRITO (CONTROLADO POR JS) -->
+        <button id="floating-cart" class="floating-cart-btn" onclick="changeView('view-pedido')">
+            🛒 Ver mi orden <span id="cart-badge-count" class="cart-count-badge">0</span>
+        </button>
+
+        <!-- ================= PÁGINA 1: MENÚ PRINCIPAL ================= -->
         <div id="view-menu" class="app-view active">
-            <!-- Barra Superior -->
             <div class="header-nav">
-                <div style="font-size: 20px;">🍕</div>
+                <div style="font-size: 18px;">🍕</div>
                 <div class="header-title">Pizzería en Casa</div>
-                <div style="font-size: 20px; cursor: pointer;">☰</div>
+                <div style="font-size: 18px;">☰</div>
             </div>
 
-            <!-- Hero Section -->
             <div class="hero-section">
                 <h1 class="hero-main-title chalk-title">Pizza<br>Artesanal</h1>
                 <div class="hero-subtitle">Hecha en casa <span>•</span> Estilo Napolitana</div>
             </div>
 
-            <!-- Aviso Domicilio -->
             <div class="delivery-badge">
                 <div class="delivery-icon">🛵</div>
                 <div class="delivery-text">
@@ -412,124 +420,93 @@
                 </div>
             </div>
 
-            <!-- Título de Sección -->
-            <div class="section-divider">
-                <span>⚡</span> Nuestras Pizzas <span>⚡</span>
+            <div class="section-divider chalk-title text-center">
+                <span class="chalk-underline">⚡ Nuestras Pizzas ⚡</span>
             </div>
 
-            <!-- Producto 1: Pepperoni -->
+            <!-- Pizza 1: Pepperoni -->
             <div class="pizza-card-large">
                 <div class="pizza-info-left">
                     <span class="pizza-tag">Clásica</span>
                     <h3 class="pizza-name-large chalk-title">Pepperoni</h3>
                     <p class="pizza-desc-large">Salsa de tomate, mozzarella y pepperoni.</p>
-                    <div class="chalk-price">$70</div>
+                    <div>
+                        <span class="chalk-price">$70</span>
+                        <button class="btn-mini-add" onclick="addItem('Pizza Pepperoni', 70)">+</button>
+                    </div>
                 </div>
                 <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400" alt="Pizza Pepperoni" class="pizza-img-right">
             </div>
 
-            <!-- Producto 2: Jamón -->
-            <div class="pizza-card-large" style="margin-top: 20px;">
+            <!-- Pizza 2: Jamón -->
+            <div class="pizza-card-large">
                 <div class="pizza-info-left">
                     <span class="pizza-tag">Jamón</span>
                     <h3 class="pizza-name-large chalk-title">Jamón</h3>
                     <p class="pizza-desc-large">Salsa de tomate, mozzarella y jamón.</p>
-                    <div class="chalk-price">$70</div>
+                    <div>
+                        <span class="chalk-price">$70</span>
+                        <button class="btn-mini-add" onclick="addItem('Pizza Jamón', 70)">+</button>
+                    </div>
                 </div>
                 <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400" alt="Pizza Jamón" class="pizza-img-right">
             </div>
 
-            <!-- Botón Ir a Pedido -->
-            <button class="btn-action-red" style="margin-top: 40px;" onclick="changeView('view-pedido')">
-                💬 Pedir por WhatsApp
-            </button>
-            <div class="footer-info">⏱️ Tiempo estimado: 30 - 45 min</div>
-            
-            <div style="text-align: center; margin-top: 35px; font-size: 12px; color: #555;">
-                ❤️ Hecha en casa con ingredientes de calidad y mucho amor.
+            <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #444;">
+                ⏱️ Tiempo estimado de entrega: 30 - 45 min
             </div>
         </div>
 
-
-        <!-- ================= PÁGINA 2: PANTALLA DE PEDIDO ================= -->
+        <!-- ================= PÁGINA 2: SECCIÓN DE PEDIDO (CARRITO) ================= -->
         <div id="view-pedido" class="app-view">
-            <!-- Barra Superior Regresar -->
             <div class="header-nav" style="border-bottom: none;">
-                <button class="back-button" onclick="changeView('view-menu')">❮</button>
-                <div class="header-title" style="margin-right: auto; padding-left: 10px;">Pedido</div>
+                <button class="back-button" onclick="changeView('view-menu')">❮ Volver</button>
             </div>
 
-            <div style="text-align: center; margin-bottom: 25px;">
-                <h2 class="chalk-title" style="font-size: 28px; margin: 0;">Tu Pedido</h2>
-                <div style="width: 60px; height: 3px; background-color: #e53935; margin: 6px auto 0 auto; border-radius: 2px;"></div>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 class="chalk-title chalk-underline" style="font-size: 32px; margin: 0;">Tu Pedido</h2>
             </div>
 
-            <!-- Caja de Estado Vacío Interactiva -->
+            <!-- Estado Vacío -->
             <div id="cart-empty-state" class="empty-cart-box">
-                <div class="empty-cart-icon">🍕</div>
-                <p style="margin: 0; font-size: 13px; letter-spacing: 0.5px;">Aún no agregas ningún producto</p>
+                <p style="margin: 0; font-size: 13px;">Aún no agregas ningún producto al carrito</p>
             </div>
 
-            <!-- Lista Dinámica de Pizzas Agregadas -->
+            <!-- Lista de Productos en el Carrito -->
             <div id="cart-items-list" class="cart-list"></div>
 
-            <!-- Sección Agregar Pizzas Directo -->
-            <div class="section-divider" style="font-size: 15px;">
-                <span>⚡</span> Agrega tus pizzas <span>⚡</span>
+            <!-- Sección Agregar Más / Extras -->
+            <div class="section-divider chalk-title" style="font-size: 15px;">
+                <span class="chalk-underline">⚡ Agrega Extras ⚡</span>
             </div>
 
-            <!-- Fila Agregar Pepperoni -->
+            <!-- Fila Extra 1 -->
             <div class="cart-item-row">
-                <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=150" class="cart-item-img">
-                <div class="cart-item-details">
-                    <div class="cart-item-name">Pepperoni</div>
-                    <div class="cart-item-price">$70</div>
-                </div>
-                <button class="btn-plus-circle" onclick="addItem('Pizza Pepperoni', 70)">+</button>
-            </div>
-
-            <!-- Fila Agregar Jamón -->
-            <div class="cart-item-row">
-                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150" class="cart-item-img">
-                <div class="cart-item-details">
-                    <div class="cart-item-name">Jamón</div>
-                    <div class="cart-item-price">$70</div>
-                </div>
-                <button class="btn-plus-circle" onclick="addItem('Pizza Jamón', 70)">+</button>
-            </div>
-
-            <!-- Sección Extras -->
-            <div class="section-divider" style="font-size: 15px; margin-top: 35px;">
-                <span>⚡</span> Extras <span>⚡</span>
-            </div>
-
-            <!-- Extra 1 -->
-            <div class="extra-row-item">
-                <div class="extra-left-info">
-                    <div class="extra-icon">🥤</div>
+                <div class="cart-item-left">
+                    <div style="font-size: 20px; margin-right: 15px;">🥤</div>
                     <div>
-                        <div class="extra-name">Coca-Cola 600 ml</div>
-                        <div class="extra-price">$25</div>
+                        <div class="cart-item-name">Coca-Cola 600 ml</div>
+                        <div class="cart-item-price">$25</div>
                     </div>
                 </div>
                 <button class="btn-plus-circle" onclick="addItem('Coca-Cola 600ml', 25)">+</button>
             </div>
 
-            <!-- Extra 2 -->
-            <div class="extra-row-item">
-                <div class="extra-left-info">
-                    <div class="extra-icon">🥤</div>
+            <!-- Fila Extra 2 -->
+            <div class="cart-item-row">
+                <div class="cart-item-left">
+                    <div style="font-size: 20px; margin-right: 15px;">🥤</div>
                     <div>
-                        <div class="extra-name">Coca-Cola 2 Litros</div>
-                        <div class="extra-price">$48</div>
+                        <div class="cart-item-name">Coca-Cola 2 Litros</div>
+                        <div class="cart-item-price">$48</div>
                     </div>
                 </div>
                 <button class="btn-plus-circle" onclick="addItem('Coca-Cola 2L', 48)">+</button>
             </div>
 
-            <!-- Sección Información de Entrega -->
-            <div class="section-divider" style="font-size: 15px; margin-top: 40px;">
-                <span>⚡</span> Información de Entrega <span>⚡</span>
+            <!-- Formulario de Datos -->
+            <div class="section-divider chalk-title" style="font-size: 15px; margin-top: 35px;">
+                <span class="chalk-underline">⚡ Información de Entrega ⚡</span>
             </div>
 
             <div class="delivery-form">
@@ -551,32 +528,46 @@
                 </div>
             </div>
 
-            <!-- Botón Finalizado Enviar Orden -->
-            <button class="btn-action-red" style="margin-top: 30px;" onclick="sendFinalOrder(event)">
-                📱 Realizar Pedido
+            <button class="btn-action-red" onclick="sendFinalOrder()">
+                📱 Enviar Pedido por WhatsApp
             </button>
-            <div class="footer-info" style="color: #444;">🔒 Tu pedido es 100% seguro</div>
         </div>
 
     </div>
 
-    <!-- SCRIPT DE INTERACCIÓN Y WHATSAPP -->
+    <!-- SCRIPT DE CONTROL E INTERACCIÓN -->
     <script>
-        // Control de vistas (Menú <-> Pedido)
+        let currentCart = {};
+
         function changeView(viewId) {
-            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
+            
+            // Ocultar botón flotante si estamos en la vista de confirmación del pedido
+            const floatBtn = document.getElementById('floating-cart');
+            if (viewId === 'view-pedido') {
+                floatBtn.style.display = 'none';
+            } else {
+                updateCartUI(); // Volver a evaluar si debe aparecer
+            }
             window.scrollTo(0, 0);
         }
 
-        // Sistema Lógico del Carrito
-        let currentOrder = {};
-
         function addItem(name, price) {
-            if (currentOrder[name]) {
-                currentOrder[name].qty += 1;
+            if (currentCart[name]) {
+                currentCart[name].qty += 1;
             } else {
-                currentOrder[name] = { price: price, qty: 1 };
+                currentCart[name] = { price: price, qty: 1 };
+            }
+            updateCartUI();
+        }
+
+        function removeItem(name) {
+            if (currentCart[name]) {
+                currentCart[name].qty -= 1;
+                if (currentCart[name].qty <= 0) {
+                    delete currentCart[name];
+                }
             }
             updateCartUI();
         }
@@ -584,9 +575,22 @@
         function updateCartUI() {
             const emptyBox = document.getElementById('cart-empty-state');
             const listContainer = document.getElementById('cart-items-list');
+            const floatBtn = document.getElementById('floating-cart');
+            const badgeCount = document.getElementById('cart-badge-count');
             
-            let keys = Object.keys(currentOrder);
+            let keys = Object.keys(currentCart);
+            let totalItems = 0;
             
+            keys.forEach(k => totalItems += currentCart[k].qty);
+
+            // Control de botón flotante del carrito
+            if (totalItems > 0 && document.getElementById('view-menu').classList.contains('active')) {
+                floatBtn.style.display = 'flex';
+                badgeCount.innerText = totalItems;
+            } else {
+                floatBtn.style.display = 'none';
+            }
+
             if (keys.length === 0) {
                 emptyBox.style.display = 'block';
                 listContainer.innerHTML = '';
@@ -596,50 +600,52 @@
             emptyBox.style.display = 'none';
             listContainer.innerHTML = '';
             
+            let totalMoney = 0;
             keys.forEach(key => {
-                let p = currentOrder[key];
+                let p = currentCart[key];
+                totalMoney += (p.price * p.qty);
                 let row = document.createElement('div');
                 row.className = 'cart-item-row';
-                row.style.borderColor = '#333';
                 row.innerHTML = `
-                    <div class="cart-item-details">
-                        <div class="cart-item-name" style="color:#e53935;">${p.qty}x ${key}</div>
-                        <div class="cart-item-price" style="color:#fff;">$${p.price * p.qty}</div>
+                    <div class="cart-item-left">
+                        <div>
+                            <div class="cart-item-name" style="color:#ffffff;">${p.qty}x ${key}</div>
+                            <div class="cart-item-price">$${p.price * p.qty}</div>
+                        </div>
                     </div>
-                    <button class="btn-plus-circle" style="background-color:#333;" onclick="removeItem('${key}')">-</button>
+                    <button class="btn-plus-circle" style="background-color:#222;" onclick="removeItem('${key}')">-</button>
                 `;
                 listContainer.appendChild(row);
             });
+
+            // Fila de Total Neto en el Carrito
+            let totalRow = document.createElement('div');
+            totalRow.className = 'cart-item-row';
+            totalRow.style.border = '1px dashed #c62828';
+            totalRow.innerHTML = `
+                <div class="cart-item-name" style="letter-spacing:1px;">Total Estimado</div>
+                <div class="chalk-price" style="font-size:22px; margin:0;">$${totalMoney}</div>
+            `;
+            listContainer.appendChild(totalRow);
         }
 
-        function removeItem(name) {
-            if (currentOrder[name]) {
-                currentOrder[name].qty -= 1;
-                if (currentOrder[name].qty <= 0) {
-                    delete currentOrder[name];
-                }
-            }
-            updateCartUI();
-        }
-
-        // Envío Estructurado a WhatsApp
-        function sendFinalOrder(e) {
-            let keys = Object.keys(currentOrder);
+        function sendFinalOrder() {
+            let keys = Object.keys(currentCart);
             let name = document.getElementById('cust-name').value.trim();
             let phone = document.getElementById('cust-phone').value.trim();
             let address = document.getElementById('cust-address').value.trim();
             let notes = document.getElementById('cust-notes').value.trim();
 
             if (keys.length === 0) {
-                alert("Por favor, añade al menos una pizza o bebida a tu pedido.");
+                alert("Tu carrito está vacío. Agrega algún producto.");
                 return;
             }
             if (!name || !phone || !address) {
-                alert("Por favor, completa tus datos de entrega (Nombre, Teléfono y Dirección).");
+                alert("Completa tus datos de Nombre, Teléfono y Dirección.");
                 return;
             }
 
-            let text = "🍕 *NUEVO PEDIDO A DOMICILIO* 🍕\n\n";
+            let text = "🍕 *NUEVO PEDIDO DESDE LA WEB* 🍕\n\n";
             text += `👤 *Cliente:* ${name}\n`;
             text += `📞 *Teléfono:* ${phone}\n`;
             text += `📍 *Dirección:* ${address}\n`;
@@ -648,13 +654,13 @@
 
             let total = 0;
             keys.forEach(k => {
-                let item = currentOrder[k];
+                let item = currentCart[k];
                 text += `• ${item.qty}x ${k} ($${item.price * item.qty})\n`;
                 total += (item.price * item.qty);
             });
-            text += `\n*💵 Total a Pagar: $${total}*`;
+            text += `\n*💵 Total Neto: $${total}*`;
 
-            // REEMPLAZA ESTE NÚMERO por tu WhatsApp real con código de país (ej: 521XXXXXXXXXX)
+            // Aquí edita tu número de WhatsApp real (ej: 521234567890)
             let myWhatsApp = "521234567890"; 
             window.open(`https://wa.me/${myWhatsApp}?text=${encodeURIComponent(text)}`, '_blank');
         }
