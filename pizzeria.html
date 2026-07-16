@@ -3,363 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizzería en Casa - App</title>
+    <title>Pizzería en Casa</title>
+    <!-- Google Fonts Premium: Diseño Moderno y Elegante -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Fredericka+the+Great&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fredericka+the+Great&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ESTILOS GENERALES --- */
+        /* --- CORE ESTILO OSCURO MINIMAL --- */
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            padding-bottom: 80px; /* Espacio para la barra de navegación inferior */
+            padding-bottom: 90px;
         }
 
         .phone-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 440px;
             background-color: #000000;
-            padding: 25px;
+            padding: 24px;
             box-sizing: border-box;
         }
 
-        /* --- PESTAÑAS (NAVEGACIÓN) --- */
+        /* --- PESTAÑAS (NAVEGACIÓN DE LA APP) --- */
         .app-page {
             display: none;
         }
         .app-page.active {
             display: block;
-            animation: fadeIn 0.3s ease both;
+            animation: v7Fade 0.3s ease both;
         }
 
-        /* --- CABECERA --- */
-        .hero {
+        /* --- BRANDING / CABECERA --- */
+        .brand-header {
             text-align: center;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        .brand-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #ffffff 0%, #a2a2a2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-header p {
+            font-size: 10px;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* --- CONTENEDOR HERO ESTILIZADO --- */
+        .hero-banner-clean {
+            width: 100%;
+            height: 120px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #090909 0%, #141414 100%);
+            border: 1px solid #1f1f1f;
             margin-bottom: 25px;
-            border-bottom: 2px solid #1a1a1a;
-            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             overflow: hidden;
-            background-color: #0b0b0b;
         }
-        .hero-image { width: 100%; height: 140px; object-fit: cover; block; }
-        .hero-text { padding: 15px; }
-        .hero h1 { font-family: 'Cinzel', serif; font-size: 24px; margin: 0; letter-spacing: 2px; }
-        .hero p { font-size: 12px; color: #aaa; margin: 5px 0 0 0; }
+        .hero-banner-clean::before {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: #e53935;
+            filter: blur(45px);
+            opacity: 0.12;
+            top: 5px;
+            right: 5px;
+        }
+        .hero-banner-title {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: #777777;
+            text-transform: uppercase;
+        }
 
-        /* --- ACORDEÓN DEL MENÚ --- */
-        .menu-category {
-            margin-bottom: 15px;
-            border: 1px solid #222222;
-            border-radius: 12px;
+        /* --- BOTONES ACORDEÓN --- */
+        .menu-row-item {
+            background: #070707;
+            border: 1px solid #161616;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .menu-row-item.active {
+            border-color: #333333;
+            background: #0d0d0d;
+        }
+        .item-label {
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+        .item-arrow {
+            font-size: 10px;
+            color: #555555;
+            transition: transform 0.3s ease;
+        }
+        .menu-row-item.active .item-arrow {
+            transform: rotate(180deg);
+            color: #ffffff;
+        }
+
+        /* --- SECCIÓN DESPLEGABLE INTERNA --- */
+        .category-content {
+            max-height: 0;
             overflow: hidden;
-            background-color: #0b0b0b;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: max-height 0.35s ease;
+            padding: 0 10px;
         }
-        .menu-category.active {
-            background-color: #111111;
-            border-color: #ffffff;
+        .menu-row-item.active + .category-content {
+            max-height: 180px;
+            padding-bottom: 20px;
         }
-        .category-trigger {
-            width: 100%; padding: 18px; background: none; border: none;
-            text-align: left; display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; outline: none;
-        }
-        .category-title { font-family: 'Cinzel', serif; font-size: 14px; color: #ffffff; font-weight: 700; }
-        .category-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; padding: 0 20px; }
-        .menu-category.active .category-content { max-height: 250px; padding-bottom: 20px; }
 
-        .product-card { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
-        .product-info { flex: 1; padding-right: 15px; }
-        .flavor-name { font-size: 16px; font-weight: 600; }
-        .flavor-style { font-size: 11px; color: #666; margin-top: 2px; }
-        
+        .expanded-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .expanded-info h3 {
+            margin: 0 0 2px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        .expanded-info p {
+            margin: 0;
+            font-size: 11px;
+            color: #555555;
+        }
+
         /* PRECIO ESTILO GIS ROJO */
         .chalk-price {
             font-family: 'Fredericka the Great', chalkboard, cursive;
             font-size: 26px;
             color: #e53935;
-            margin: 5px 0;
-        }
-
-        .product-image-container { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 2px solid #222; }
-        .pizza-img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* --- BOTONES DE AGREGAR AL CARRITO --- */
-        .btn-add {
-            background-color: #e53935; color: white; border: none; padding: 6px 12px;
-            border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 12px; margin-top: 5px;
+            margin-top: 4px;
         }
 
         /* --- SECCIÓN BEBIDAS --- */
-        .drinks-section { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #222; }
-        .drink-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .section-separator {
+            margin-top: 30px;
+            border-top: 1px solid #121212;
+            padding-top: 25px;
+        }
+        .section-separator h2 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444444;
+            margin: 0 0 16px 0;
+            font-weight: 700;
+        }
+        .drink-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+        .drink-name { color: #888888; font-weight: 400; }
+        .drink-price { color: #ffffff; font-weight: 700; }
 
-        /* --- BARRA DE NAVEGACIÓN INFERIOR (ESTILO APP) --- */
-        .nav-bar {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 480px; background-color: #0b0b0b;
-            border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 12px 0;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.8); z-index: 100;
-        }
-        .nav-item {
-            background: none; border: none; color: #666; font-size: 11px;
-            font-weight: 600; text-transform: uppercase; cursor: pointer; letter-spacing: 1px;
-        }
-        .nav-item.active { color: #e53935; }
-
-        /* --- CARRITO FLOTANTE / TOTAL --- */
-        .cart-summary {
-            background-color: #111; border: 1px solid #e53935; border-radius: 8px;
-            padding: 15px; margin-top: 25px; text-align: center;
-        }
+        /* --- BOTÓN DE ENVIAR ORDEN DIRECTO --- */
         .btn-whatsapp {
-            display: block; text-align: center; background-color: #ffffff; color: #000000;
-            padding: 14px; border-radius: 6px; text-decoration: none; font-size: 13px;
-            font-weight: 600; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px;
+            display: block;
+            text-align: center;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 40px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            background-color: #e53935;
+            color: #ffffff;
         }
 
-        /* --- SECCIÓN MINIMAPA --- */
-        .map-container {
-            width: 100%; height: 280px; background-color: #111; border-radius: 12px;
-            border: 1px solid #222; display: flex; align-items: center; justify-content: center; color: #666;
-            margin-top: 15px; text-align: center; padding: 20px; box-sizing: border-box;
+        /* --- DOCK DE NAVEGACIÓN CÁPSULA FLOTANTE --- */
+        .bottom-dock-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 390px;
+            height: 64px;
+            background: rgba(8, 8, 8, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid #1c1c1c;
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+        .dock-tab {
+            background: none;
+            border: none;
+            color: #444444;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .dock-tab.active {
+            color: #e53935;
         }
 
-        /* --- SECCIÓN ADMIN --- */
-        .admin-box { background-color: #0b0b0b; border: 1px solid #333; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .admin-status { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: #2e7d32; color: white; }
+        /* --- SECCIÓN MINIMAPA Y ADMIN STYLING --- */
+        .map-box-clean {
+            width: 100%; height: 280px; background-color: #070707; border-radius: 16px;
+            border: 1px solid #161616; display: flex; align-items: center; justify-content: center; color: #555;
+            margin-top: 20px; font-size: 13px; text-align: center; padding: 20px; box-sizing: border-box;
+        }
+        .admin-row-card { background: #070707; border: 1px solid #161616; padding: 16px; border-radius: 14px; margin-top: 15px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes v7Fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="phone-container">
         
-        <!-- ================= PÁGINA 1: EL MENÚ & CARRITO ================= -->
+        <!-- PÁGINA 1: EL MENÚ -->
         <div id="page-menu" class="app-page active">
-            <div class="hero">
-                <img src="https://images.unsplash.com/photo-1573145959534-9e48603ed749?w=500&auto=format&fit=crop&q=60" alt="Horno" class="hero-image">
-                <div class="hero-text">
-                    <h1>Pizzería en Casa</h1>
-                    <p>Ordena directamente desde la app</p>
-                </div>
+            <div class="brand-header">
+                <h1>Pizzería en Casa</h1>
+                <p>Artesanal • Italiano</p>
             </div>
 
-            <!-- Categoría 1 -->
-            <div class="menu-category" id="cat-horno">
-                <button class="category-trigger" onclick="toggleCategory('cat-horno')">
-                    <span class="category-title">Pizza Horno Pizzero</span>
-                    <span>▼</span>
-                </button>
-                <div class="category-content">
-                    <div class="product-card">
-                        <div class="product-info">
-                            <div class="flavor-name">Peperoni</div>
-                            <div class="flavor-style">Estilo Napolitana Tradicional</div>
-                            <div class="chalk-price">$85</div>
-                            <button class="btn-add" onclick="addToCart('Pizza Horno Pizzero', 85)">+ Agregar</button>
-                        </div>
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200" class="pizza-img">
-                        </div>
+            <div class="hero-banner-clean">
+                <span class="hero-banner-title">Horno Pizzero Activo</span>
+            </div>
+
+            <!-- ACORDEÓN 1: HORNO -->
+            <div class="menu-row-item" id="trigger-horno" onclick="toggleCategory('cat-horno', 'trigger-horno')">
+                <span class="item-label">Pizza Horno Pizzero</span>
+                <span class="item-arrow">▼</span>
+            </div>
+            <div class="category-content" id="cat-horno">
+                <div class="expanded-card">
+                    <div class="expanded-info">
+                        <h3>Peperoni</h3>
+                        <p>Masa Napolitana Tradicional</p>
+                        <div class="chalk-price">$85</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Categoría 2 -->
-            <div class="menu-category" id="cat-normal">
-                <button class="category-trigger" onclick="toggleCategory('cat-normal')">
-                    <span class="category-title">Pizza Normal</span>
-                    <span>▼</span>
-                </button>
-                <div class="category-content">
-                    <div class="product-card">
-                        <div class="product-info">
-                            <div class="flavor-name">Peperoni</div>
-                            <div class="flavor-style">Tamaño Mediano Comercial</div>
-                            <div class="chalk-price">$85</div>
-                            <button class="btn-add" onclick="addToCart('Pizza Normal', 85)">+ Agregar</button>
-                        </div>
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200" class="pizza-img">
-                        </div>
+            <!-- ACORDEÓN 2: NORMAL -->
+            <div class="menu-row-item" id="trigger-normal" onclick="toggleCategory('cat-normal', 'trigger-normal')">
+                <span class="item-label">Pizza Normal</span>
+                <span class="item-arrow">▼</span>
+            </div>
+            <div class="category-content" id="cat-normal">
+                <div class="expanded-card">
+                    <div class="expanded-info">
+                        <h3>Peperoni</h3>
+                        <p>Mediana Comercial Clásica</p>
+                        <div class="chalk-price">$85</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Categoría 3 -->
-            <div class="menu-category" id="cat-grande">
-                <button class="category-trigger" onclick="toggleCategory('cat-grande')">
-                    <span class="category-title">Pizza Grande</span>
-                    <span>▼</span>
-                </button>
-                <div class="category-content">
-                    <div class="product-card">
-                        <div class="product-info">
-                            <div class="flavor-name">Peperoni</div>
-                            <div class="flavor-style">Tamaño Grande Familiar</div>
-                            <div class="chalk-price">$100</div>
-                            <button class="btn-add" onclick="addToCart('Pizza Grande', 100)">+ Agregar</button>
-                        </div>
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=200" class="pizza-img">
-                        </div>
+            <!-- ACORDEÓN 3: GRANDE -->
+            <div class="menu-row-item" id="trigger-grande" onclick="toggleCategory('cat-grande', 'trigger-grande')">
+                <span class="item-label">Pizza Grande</span>
+                <span class="item-arrow">▼</span>
+            </div>
+            <div class="category-content" id="cat-grande">
+                <div class="expanded-card">
+                    <div class="expanded-info">
+                        <h3>Peperoni</h3>
+                        <p>Grande Familiar Crujiente</p>
+                        <div class="chalk-price">$100</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bebidas -->
-            <div class="drinks-section">
-                <div class="drink-item">
-                    <div>
-                        <div style="font-weight:600;">Coca-Cola 600 ml</div>
-                        <div style="color:#e53935; font-weight:bold; margin-top:2px;">$25</div>
-                    </div>
-                    <button class="btn-add" onclick="addToCart('Coca-Cola 600ml', 25)">+ Agregar</button>
+            <!-- BEBIDAS -->
+            <div class="section-separator">
+                <h2>Bebidas</h2>
+                <div class="drink-row">
+                    <span class="drink-name">Coca-Cola Original 600 ml</span>
+                    <span class="drink-price">$25</span>
                 </div>
-                <div class="drink-item">
-                    <div>
-                        <div style="font-weight:600;">Coca-Cola 2 Litros</div>
-                        <div style="color:#e53935; font-weight:bold; margin-top:2px;">$48</div>
-                    </div>
-                    <button class="btn-add" onclick="addToCart('Coca-Cola 2L', 48)">+ Agregar</button>
+                <div class="drink-row">
+                    <span class="drink-name">Coca-Cola Original 2 Litros</span>
+                    <span class="drink-price">$48</span>
                 </div>
             </div>
 
-            <!-- Resumen del Carrito Automatizado -->
-            <div class="cart-summary">
-                <div style="font-size: 13px; color: #aaa;">Tu Pedido Actual:</div>
-                <div id="cart-items" style="font-size: 14px; margin: 8px 0; font-weight: 600;">Tu carrito está vacío</div>
-                <div style="font-size: 18px; font-weight: bold;">Total: <span id="cart-total" style="color:#e53935;">$0</span></div>
-                <a href="#" id="whatsapp-link" class="btn-whatsapp" onclick="sendOrder(event)">🛒 Confirmar y Enviar Orden</a>
-            </div>
+            <!-- BOTÓN DIRECTO PARA PEDIDOS -->
+            <!-- Recuerda cambiar el 521234567890 por tu número real -->
+            <a href="https://wa.me/521234567890?text=¡Hola!%20Me%20gustaría%20hacer%20un%20pedido%20de%20pizzas." class="btn-whatsapp" target="_blank">
+                📱 Pedir por WhatsApp
+            </a>
         </div>
 
-        <!-- ================= PÁGINA 2: MINIMAPA DE COBERTURA ================= -->
+        <!-- PÁGINA 2: MINIMAPA DE COBERTURA -->
         <div id="page-mapa" class="app-page">
-            <h2 style="font-family:'Cinzel'; letter-spacing:1px; font-size:20px; border-left:3px solid #e53935; padding-left:10px;">Zona de Entrega</h2>
-            <p style="font-size:13px; color:#aaa; line-height:1.5;">Repartimos únicamente en nuestra zona cercana para garantizar que tu pizza napolitana llegue caliente y crujiente.</p>
-            
-            <div class="map-container">
-                <!-- Aquí puedes meter un mapa real de Google Maps usando un iframe o dejar esta maqueta limpia -->
+            <div class="brand-header" style="text-align:left;">
+                <h1>Ubicación</h1>
+                <p>Cobertura de Entrega Local</p>
+            </div>
+            <div class="map-box-clean">
                 <div>
-                    <div style="font-size:40px; margin-bottom:10px;">📍</div>
-                    <strong>📍 Cobertura Local Activa</strong><br>
-                    <span style="font-size:12px; color:#555;">[Tu mapa de calles o colonias se mostrará aquí]</span>
+                    <div style="font-size:32px; margin-bottom:10px;">📍</div>
+                    <strong>Zona de Cobertura Activa</strong><br><br>
+                    <span style="color:#666; font-size:12px;">Repartimos exclusivamente en nuestra área cercana para garantizar la temperatura ideal de tu pizza artesanal.</span>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PÁGINA 3: PANEL DEL ADMIN ================= -->
+        <!-- PÁGINA 3: PANEL DEL ADMIN -->
         <div id="page-admin" class="app-page">
-            <h2 style="font-family:'Cinzel'; letter-spacing:1px; font-size:20px; border-left:3px solid #e53935; padding-left:10px;">Panel de Control</h2>
-            
-            <div class="admin-box">
-                <div style="display:flex; justify-content:between; align-items:center; width:100%;">
-                    <span style="font-weight:600; flex:1;">Estado del Negocio:</span>
-                    <span class="admin-status">🟢 ABIERTO</span>
-                </div>
+            <div class="brand-header" style="text-align:left;">
+                <h1>Panel Admin</h1>
+                <p>Configuración del Sistema</p>
             </div>
-
-            <div class="admin-box">
-                <strong style="color:#e53935;">Monitoreo de Sistema</strong>
-                <p style="font-size:12px; color:#aaa; margin:5px 0 0 0;">Pedidos recibidos hoy: <strong style="color:#fff;">0</strong></p>
-                <p style="font-size:12px; color:#aaa; margin:3px 0 0 0;">Ganancia estimada: <strong style="color:#2e7d32;">$0.00 MXN</strong></p>
+            <div class="admin-row-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:14px;">
+                    <span>Estado del Negocio:</span> <strong style="color:#2e7d32;">🟢 ABIERTO</strong>
+                </div>
             </div>
         </div>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR DE LA APP -->
-        <div class="nav-bar">
-            <button class="nav-item active" id="btn-nav-menu" onclick="switchPage('menu')">🍕 Menú</button>
-            <button class="nav-item" id="btn-nav-mapa" onclick="switchPage('mapa')">📍 Mapa</button>
-            <button class="nav-item" id="btn-nav-admin" onclick="switchPage('admin')">⚙️ Admin</button>
+        <!-- BARRA DOCK FLOTANTE PREMIUM -->
+        <div class="bottom-dock-nav">
+            <button class="dock-tab active" id="tab-menu" onclick="navigate('menu')">Menu</button>
+            <button class="dock-tab" id="tab-mapa" onclick="navigate('mapa')">Mapa</button>
+            <button class="dock-tab" id="tab-admin" onclick="navigate('admin')">Admin</button>
         </div>
 
     </div>
 
-    <!-- SCRIPT LOGICO PARA MANEJAR LA APP -->
     <script>
-        // Lógica de navegación entre pestañas
-        function switchPage(pageId) {
-            document.querySelectorAll('.app-page').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+        // Cambio dinámico entre las pestañas inferiores
+        function navigate(target) {
+            document.querySelectorAll('.app-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('page-' + target).classList.add('active');
+            document.getElementById('tab-' + target).classList.add('active');
+        }
+
+        // Animación y control de las categorías acordeón
+        function toggleCategory(catId, triggerId) {
+            const content = document.getElementById(catId);
+            const trigger = document.getElementById(triggerId);
+            const isOpen = trigger.classList.contains('active');
             
-            document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('btn-nav-' + pageId).classList.add('active');
-        }
-
-        // Lógica de apertura del acordeón
-        function toggleCategory(id) {
-            const allCategories = document.querySelectorAll('.menu-category');
-            allCategories.forEach(cat => {
-                if(cat.id === id) { cat.classList.toggle('active'); }
-                else { cat.classList.remove('active'); }
-            });
-        }
-
-        // LORICA DEL CARRITO EN LA APP
-        let cart = {};
-        function addToCart(productName, price) {
-            if (cart[productName]) {
-                cart[productName].qty += 1;
-            } else {
-                cart[productName] = { price: price, qty: 1 };
+            document.querySelectorAll('.menu-row-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.category-content').forEach(c => c.style.maxHeight = null);
+            
+            if (!isOpen) {
+                trigger.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
             }
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const itemsContainer = document.getElementById('cart-items');
-            const totalContainer = document.getElementById('cart-total');
-            
-            let keys = Object.keys(cart);
-            if(keys.length === 0) {
-                itemsContainer.innerHTML = "Tu carrito está vacío";
-                totalContainer.innerHTML = "$0";
-                return;
-            }
-            
-            let textSummary = [];
-            let total = 0;
-            
-            keys.forEach(key => {
-                let item = cart[key];
-                textSummary.push(`${item.qty}x ${key}`);
-                total += (item.price * item.qty);
-            });
-            
-            itemsContainer.innerHTML = textSummary.join(', ');
-            totalContainer.innerHTML = "$" + total;
-        }
-
-        function sendOrder(e) {
-            let keys = Object.keys(cart);
-            if(keys.length === 0) {
-                e.preventDefault();
-                alert("Por favor, agrega al menos una pizza o refresco a tu carrito antes de pedir.");
-                return;
-            }
-            
-            let message = "¡Hola! Me gustaría hacer el siguiente pedido desde la app:\n\n";
-            let total = 0;
-            keys.forEach(key => {
-                let item = cart[key];
-                message += `• ${item.qty}x ${key} ($${item.price * item.qty})\n`;
-                total += (item.price * item.qty);
-            });
-            message += `\n*Total a Pagar: $${total}*`;
-            
-            // Reemplaza el 521234567890 por tu número de teléfono real
-            let whatsappNumber = "521234567890"; 
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
     </script>
 </body>
