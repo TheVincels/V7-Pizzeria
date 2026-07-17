@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V17 — Pizza Artesanal</title>
-    <!-- Google Fonts: Space Grotesk (Limpia) y Permanent Marker (Gis Rústico) -->
+    <!-- Google Fonts y Estilos de Mapas Leaflet -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
         /* --- ESTILOS CORE OSCURO PREMIUM --- */
@@ -42,7 +43,7 @@
 
         .app-view.active {
             display: block;
-            animation: fadeIn 0.2s ease both;
+            animation: fadeIn 0.3s ease both;
         }
 
         /* --- DETALLES ESTILO GIS --- */
@@ -268,21 +269,15 @@
             font-size: 14px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; width: 100%; margin-top: 20px;
         }
 
-        .btn-gps-clean {
-            background-color: #111;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 10px;
+        /* --- MINIMAPA INTEGRADO --- */
+        .interactive-map-container {
             width: 100%;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
+            height: 220px;
+            border-radius: 14px;
+            border: 1px solid #222;
+            margin-top: 10px;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            z-index: 10;
         }
 
         /* --- ELEMENTOS DE COCINA, REPARTO Y ADMIN --- */
@@ -317,19 +312,48 @@
         }
 
         .btn-kitchen-toggle {
-            background: #222; color: #fff; border: 1px solid #333; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; margin-top: 15px; font-weight: 600;
+            background: #222;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 15px;
+            font-weight: 600;
         }
 
         .btn-pass-delivery {
-            background: #c62828; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; margin-top: 15px; margin-left: 10px; font-weight: 700; text-transform: uppercase;
+            background: #c62828;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 15px;
+            margin-left: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .delivery-card, .admin-report-card {
-            background: #090909; border: 1px solid #222; border-radius: 14px; padding: 16px; margin-bottom: 15px; border-left: 4px solid #c62828;
+            background: #090909;
+            border: 1px solid #222;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 15px;
+            border-left: 4px solid #c62828;
         }
 
         .report-section-title {
-            font-size: 12px; font-weight: 700; text-transform: uppercase; color: #666; margin-top: 8px; margin-bottom: 4px; letter-spacing: 0.5px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #666;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -435,7 +459,7 @@
                 <button class="btn-mini-add" onclick="addItem('Coca-Cola 2L', 48)">+</button>
             </div>
 
-            <!-- Entrega y Ubicación GPS Nativa -->
+            <!-- Entrega y Minimapa -->
             <div class="section-divider chalk-title" style="font-size: 15px; margin-top: 35px;">
                 <span class="chalk-underline">⚡ Ubicación de Entrega ⚡</span>
             </div>
@@ -451,13 +475,11 @@
                 </div>
                 <div class="input-group">
                     <span class="input-icon">📍</span>
-                    <input type="text" id="cust-address" class="form-input" placeholder="Dirección, calle y número de casa">
+                    <input type="text" id="cust-address" class="form-input" placeholder="Dirección y referencias adicionales">
                 </div>
                 
-                <!-- Botón GPS Liviano -->
-                <button type="button" class="btn-gps-clean" onclick="getGPSLocation()">
-                    <span id="gps-status-icon">📍</span> <span id="gps-status-text">Fijar mi ubicación actual por GPS</span>
-                </button>
+                <p style="font-size: 11px; color: #888; margin: 10px 0 5px 0;">Marque en el mapa el punto exacto de su casa:</p>
+                <div id="client-map" class="interactive-map-container"></div>
             </div>
 
             <button class="btn-action-red" onclick="processOrder()">
@@ -481,55 +503,61 @@
                 <button class="back-button" onclick="changeView('view-menu')">❮ Volver</button>
                 <div class="header-title chalk-title" style="font-size: 18px;"> 🛵 Reparto</div>
             </div>
-            <div style="margin-bottom: 20px; font-size:13px; color:#aaa;">Órdenes listas para despacho express con GPS.</div>
+            <div id="admin-map" class="interactive-map-container"></div>
             <div id="reparto-orders-container"></div>
         </div>
 
-        <!-- ================= PÁGINA 5: PANEL DE ADMINISTRACIÓN GENERAL ================= -->
+        <!-- ================= PÁGINA 5: PANEL DE ADMINISTACIÓN GENERAL ================= -->
         <div id="view-admin" class="app-view">
             <div class="header-nav" style="border-bottom: none;">
                 <button class="back-button" onclick="changeView('view-menu')">❮ Volver</button>
                 <div class="header-title chalk-title" style="font-size: 18px;">⚙️ Admin</div>
             </div>
             <div style="margin-bottom: 20px; font-size:13px; color:#aaa;">Reporte financiero detallado e historial de clientes de tu base de datos.</div>
+            
             <div id="admin-reports-container"></div>
         </div>
 
     </div>
 
+    <!-- Scripts del mapa interactivo OpenStreetMap -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let currentCart = {};
-        let userLat = 0, userLng = 0;
+        let clientMap, adminMap, clientMarker, adminMarker;
+        let selectedLat = 19.4326, selectedLng = -99.1332;
+
+        function initMaps() {
+            clientMap = L.map('client-map').setView([selectedLat, selectedLng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(clientMap);
+            
+            clientMarker = L.marker([selectedLat, selectedLng], {draggable: true}).addTo(clientMap);
+            clientMarker.on('dragend', function(e) {
+                let position = clientMarker.getLatLng();
+                selectedLat = position.lat;
+                selectedLng = position.lng;
+            });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(pos) {
+                    selectedLat = pos.coords.latitude;
+                    selectedLng = pos.coords.longitude;
+                    clientMap.setView([selectedLat, selectedLng], 16);
+                    clientMarker.setLatLng([selectedLat, selectedLng]);
+                });
+            }
+
+            adminMap = L.map('admin-map').setView([selectedLat, selectedLng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(adminMap);
+            adminMarker = L.marker([selectedLat, selectedLng]).addTo(adminMap);
+        }
 
         window.onload = function() {
+            initMaps();
             if (!localStorage.getItem('v17_orders_database')) {
                 localStorage.setItem('v17_orders_database', JSON.stringify([]));
             }
         };
-
-        // Captura GPS nativa e instantánea sin cargar mapas pesados
-        function getGPSLocation() {
-            const statusText = document.getElementById('gps-status-text');
-            const statusIcon = document.getElementById('gps-status-icon');
-            
-            statusText.innerText = "Localizando...";
-            statusIcon.innerText = "⏳";
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    userLat = pos.coords.latitude;
-                    userLng = pos.coords.longitude;
-                    statusText.innerText = "¡Ubicación guardada con éxito!";
-                    statusText.style.color = "#2e7d32";
-                    statusIcon.innerText = "✅";
-                }, function(error) {
-                    statusText.innerText = "Error al localizar. Escribe tu dirección.";
-                    statusIcon.innerText = "❌";
-                }, { enableHighAccuracy: true, timeout: 5000 });
-            } else {
-                statusText.innerText = "GPS no compatible en este buscador.";
-            }
-        }
 
         function changeView(viewId) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
@@ -537,12 +565,14 @@
             
             if (viewId === 'view-pedido') {
                 document.getElementById('floating-cart').style.display = 'none';
+                setTimeout(() => { clientMap.invalidateSize(); }, 200);
             } else {
                 updateCartUI();
             }
             window.scrollTo(0, 0);
         }
 
+        // ACCESOS PROTEGIDOS POR CONTRASEÑA INDEPENDIENTE
         function checkAccess(section) {
             if (section === 'pedidos') {
                 if (prompt("Acceso Cocina. Contraseña:") === "1199") {
@@ -553,6 +583,7 @@
                 if (prompt("Acceso Reparto. Contraseña:") === "9999") {
                     changeView('view-reparto');
                     renderDeliveryView();
+                    setTimeout(() => { adminMap.invalidateSize(); }, 200);
                 } else alert("Acceso denegado.");
             } else if (section === 'admin') {
                 if (prompt("Acceso General de Administración. Contraseña:") === "2549") {
@@ -653,23 +684,40 @@
                 }
             });
 
+            // Registrar objeto de orden completo en base de datos local
             database.push({
-                id: orderNumber, name: name, phone: phone, address: address,
-                pizzas: pizzasList, extras: extrasList, total: totalMoney,
-                lat: userLat, lng: userLng, status: 'pending', colorState: 'red',
+                id: orderNumber,
+                name: name,
+                phone: phone,
+                address: address,
+                pizzas: pizzasList,
+                extras: extrasList,
+                total: totalMoney,
+                lat: selectedLat,
+                lng: selectedLng,
+                status: 'pending',
+                colorState: 'red',
                 timestamp: new Date().toLocaleString()
             });
             localStorage.setItem('v17_orders_database', JSON.stringify(database));
 
             // INTEGRACIÓN AUTOMÁTICA CON GOOGLE SHEETS
+            // Reemplaza esta URL simulada por el enlace real generado en tu Google Drive
             let googleSheetsURL = "AQUI_VA_TU_URL_DE_GOOGLE_SHEETS"; 
             if(googleSheetsURL !== "AQUI_VA_TU_URL_DE_GOOGLE_SHEETS") {
                 fetch(googleSheetsURL, {
-                    method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'},
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ 
-                        id: orderNumber, name: name, phone: phone, address: address, 
-                        pizzas: pizzasList.join(', '), extras: extrasList.join(', '), total: totalMoney, 
-                        coordenadas: userLat !== 0 ? `${userLat},${userLng}` : "No proporcionada"
+                        id: orderNumber,
+                        name: name, 
+                        phone: phone, 
+                        address: address, 
+                        pizzas: pizzasList.join(', '), 
+                        extras: extrasList.join(', '), 
+                        total: totalMoney, 
+                        coordenadas: `${selectedLat},${selectedLng}` 
                     })
                 });
             }
@@ -680,15 +728,11 @@
             document.getElementById('cust-name').value = '';
             document.getElementById('cust-phone').value = '';
             document.getElementById('cust-address').value = '';
-            userLat = 0; userLng = 0;
-            document.getElementById('gps-status-text').innerText = "Fijar mi ubicación actual por GPS";
-            document.getElementById('gps-status-text').style.color = "#fff";
-            document.getElementById('gps-status-icon').innerText = "📍";
-            
             updateCartUI();
             changeView('view-menu');
         }
 
+        // ================= SECCIÓN 1: COCINA (PEDIDOS) =================
         function renderKitchenView() {
             const container = document.getElementById('kitchen-orders-container');
             let database = JSON.parse(localStorage.getItem('v17_orders_database') || "[]");
@@ -742,6 +786,7 @@
             }
         }
 
+        // ================= SECCIÓN 2: REPARTO =================
         function renderDeliveryView() {
             const container = document.getElementById('reparto-orders-container');
             let database = JSON.parse(localStorage.getItem('v17_orders_database') || "[]");
@@ -756,11 +801,7 @@
             activeDeliveryOrders.forEach(ord => {
                 let div = document.createElement('div');
                 div.className = 'delivery-card';
-                
-                // Si el cliente dio coordenadas, traza la ruta. Si no, busca por el texto de su dirección
-                let navUrl = (ord.lat !== 0) 
-                    ? `https://www.google.com/maps/dir/?api=1&destination=${ord.lat},${ord.lng}`
-                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ord.address)}`;
+                let navUrl = `https://www.google.com/maps/dir/?api=1&destination=${ord.lat},${ord.lng}`;
                 
                 let pizzasCounts = {};
                 ord.pizzas.forEach(p => pizzasCounts[p] = (pizzasCounts[p] || 0) + 1);
@@ -774,12 +815,18 @@
                     <div style="margin:5px 0; font-size:13px;">🍕 *Pizzas:* <span style="color:#fff; font-weight:600;">${pizzasSummary}</span></div>
                     <div style="margin-bottom:10px; font-size:13px;">🥤 *Extras:* <span style="color:#e67e22; font-weight:600;">${extrasSummary}</span></div>
                     <div style="display:flex; gap:8px;">
-                        <a href="${navUrl}" target="_blank" class="btn-action-red" style="padding:10px 20px; font-size:12px; margin:0; width:100%; text-decoration:none; display:inline-block; text-align:center;">🚗 Dirigirme hacia aquí (Google Maps)</a>
-                        <button class="btn-action-red" style="padding:10px 15px; font-size:12px; margin:0; width:auto; background-color:#2e7d32;" onclick="archiveOrder('${ord.id}')">✔️ Entregado</button>
+                        <button class="btn-action-red" style="padding:6px 10px; font-size:11px; margin:0; width:auto; background-color:#222;" onclick="focusRepartoMap(${ord.lat}, ${ord.lng})">📍 Ver Mapa</button>
+                        <a href="${navUrl}" target="_blank" class="btn-action-red" style="padding:6px 12px; font-size:11px; margin:0; width:auto; text-decoration:none; display:inline-block; text-align:center;">🚗 Navegar</a>
+                        <button class="btn-action-red" style="padding:6px 12px; font-size:11px; margin:0; width:auto; background-color:#2e7d32;" onclick="archiveOrder('${ord.id}')">✔️ Entregado</button>
                     </div>
                 `;
                 container.appendChild(div);
             });
+        }
+
+        function focusRepartoMap(lat, lng) {
+            adminMap.setView([lat, lng], 17);
+            adminMarker.setLatLng([lat, lng]);
         }
 
         function archiveOrder(id) {
@@ -792,6 +839,7 @@
             }
         }
 
+        // ================= SECCIÓN 3: REPORTE FINANCIERO Y CLIENTES (ADMIN) =================
         function renderAdminReportView() {
             const container = document.getElementById('admin-reports-container');
             let database = JSON.parse(localStorage.getItem('v17_orders_database') || "[]");
@@ -802,6 +850,8 @@
             }
 
             container.innerHTML = '';
+            
+            // Generar métricas acumuladas globales
             let grandTotalSales = 0;
             let totalPizzasSold = 0;
             database.forEach(o => {
@@ -820,32 +870,38 @@
             `;
             container.appendChild(metricsHeader);
 
+            // Desplegar reporte detallado orden por orden
             database.forEach(ord => {
                 let reportCard = document.createElement('div');
                 reportCard.className = 'admin-report-card';
                 
+                // Formatear desglose de pizzas
                 let pizzasCounts = {};
                 ord.pizzas.forEach(p => pizzasCounts[p] = (pizzasCounts[p] || 0) + 1);
                 let pizzasLines = Object.keys(pizzasCounts).map(k => `• ${pizzasCounts[k]}x Pizza ${k}`).join('<br>') || 'Ninguna';
-                let extrasLines = ord.extras.length > 0 ? ord.extras.map(e => `• ${e}`).join('<br>') : 'Ninguno';
-                let statusLabels = { 'pending': '🔴 Cocina (Pendiente)', 'ready': '🟡 En Camino', 'archive': '🟢 Entregado' };
 
-                let mapInfo = (ord.lat !== 0) ? `${ord.lat}, ${ord.lng}` : "No compartida";
+                // Formatear desglose de extras
+                let extrasLines = ord.extras.length > 0 ? ord.extras.map(e => `• ${e}`).join('<br>') : 'Ninguno';
+
+                let statusLabels = { 'pending': '🔴 Cocina (Pendiente)', 'ready': '🟡 En Camino', 'archive': '🟢 Entregado' };
 
                 reportCard.innerHTML = `
                     <div style="display:flex; justify-content:space-between; font-weight:700; border-bottom:1px solid #222; padding-bottom:6px; margin-bottom:10px;">
                         <span>📋 Orden #${ord.id}</span>
                         <span style="font-size:11px; color:#aaa;">${ord.timestamp}</span>
                     </div>
+                    
                     <div class="report-section-title">👤 Datos del Cliente</div>
                     <div style="font-size:13px;"><strong>Nombre:</strong> ${ord.name}</div>
                     <div style="font-size:13px;"><strong>Teléfono:</strong> ${ord.phone}</div>
                     <div style="font-size:13px; color:#aaa;"><strong>Domicilio:</strong> ${ord.address}</div>
-                    <div style="font-size:11px; color:#555;"><strong>Coordenadas GPS:</strong> ${mapInfo}</div>
+
                     <div class="report-section-title">🍕 Pizzas Vendidas</div>
                     <div style="font-size:13px; padding-left:5px; line-height:1.4;">${pizzasLines}</div>
+
                     <div class="report-section-title">🥤 Extras / Refrescos</div>
                     <div style="font-size:13px; padding-left:5px; line-height:1.4;">${extrasLines}</div>
+
                     <div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:8px; border-top:1px dashed #222; align-items:center;">
                         <span style="font-size:12px; color:#aaa;">Estado: ${statusLabels[ord.status]}</span>
                         <span style="font-size:16px; font-weight:700; color:#e53935;">Total: $${ord.total}</span>
@@ -856,7 +912,7 @@
         }
 
         function clearSystemDatabase() {
-            if(confirm("¿Deseas eliminar permanentemente todo el historial del sistema local?")) {
+            if(confirm("¿Deseas eliminar permanentemente todo el historial financiero, órdenes y registros de clientes del sistema local?")) {
                 localStorage.setItem('v17_orders_database', JSON.stringify([]));
                 renderAdminReportView();
             }
